@@ -1,6 +1,9 @@
 import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
+import { CATEGORY_NAMES } from './data/categories';
+
+const categorySchema = z.enum(CATEGORY_NAMES as [string, ...string[]]);
 
 const blog = defineCollection({
   loader: glob({ base: './src/content/blog', pattern: '**/*.{md,mdx}' }),
@@ -12,7 +15,7 @@ const blog = defineCollection({
       (value) => value === '' || value == null ? undefined : value,
       z.coerce.date().optional(),
     ),
-    category: z.string().default('기록'),
+    category: categorySchema.default('기록'),
     tags: z.array(z.string()).default([]),
     cover: z.string().optional(),
     videoUrl: z.string().optional(),

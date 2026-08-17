@@ -39,7 +39,7 @@ content:
     subfolders: false
     filename:
       template: "{year}-{month}-{day}-{primary}.md"
-      field: create
+      field: title
     view:
       fields: [title, pubDate, category, draft]
       primary: title
@@ -75,14 +75,17 @@ content:
           format: yyyy-MM-dd
       - name: category
         label: 카테고리
-        type: string
+        type: select
         required: true
         default: 기록
+        options:
+          values: [기록, 개발, 일상, iOS, 공지]
       - name: tags
         label: 태그
         type: string
         list: true
         default: []
+        description: "쉼표가 아닌 태그칸을 별도로 추가해 입력하세요."
       - name: cover
         label: 대표 이미지
         type: image

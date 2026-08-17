@@ -1,0 +1,58 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostCard from '../../components/PostCard.astro';
+import { BLOG_CATEGORIES, getCategoryBySlug } from '../../data/categories';
+const base = `${import.meta.env.BASE_URL.replace(/\/+$/, '')}/`;
+
+export async function getStaticPaths() {
+  return BLOG_CATEGORIES.map((category) => ({ params: { slug: category.slug }, props: { slug: category.slug } }));
+}
+
+const { slug } = Astro.props;
+const category = getCategoryBySlug(slug);
+
+if (!category) {
+  throw new Error('지원하지 않는 카테고리입니다.');
+}
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft && data.pubDate <= new Date() && data.category === category.name))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<BaseLayout title={`${category.name} 카테고리`} description={`${category.name} 카테고리의 글 목록입니다.`}>
+  <section class="container page">
+    <p class="eyebrow">카테고리</p>
+    <h1>{category.emoji} {category.name}</h1>
+    <div class="section-head">
+      <span>{posts.length}개의 글</span>
+      <a class="muted-link" href={`${base}categories/`}>← 카테고리 목록으로</a>
+    </div>
+    <div class="list">
+      {posts.length ? (
+        posts.map((post) => <PostCard post={post} />)
+      ) : (
+        <p class="muted no-results">아직 등록된 글이 없습니다.</p>
+      )}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page { max-width: 820px; padding-top: 4.5rem; }
+  .section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin: .35rem 0 1.6rem;
+    color: var(--muted);
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 0.8rem;
+  }
+  .muted-link { color: var(--muted); }
+  .muted-link:hover { color: var(--accent); }
+  h1 { margin: .2rem 0 1.35rem; font-size: clamp(2rem, 4.8vw, 3.2rem); letter-spacing: -.045em; }
+  .list :global(.list > article:first-child) { padding-top: 0; }
+  .no-results { margin-top: 3rem; text-align: center; }
+</style>

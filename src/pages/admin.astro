@@ -9,8 +9,11 @@ const base = `${import.meta.env.BASE_URL.replace(/\/+$/, '')}/`;
     <section class="page">
       <p class="eyebrow">Admin</p>
       <h1>포스트 작성</h1>
-      <p class="intro">아래 버튼으로 Pages CMS 글쓰기 화면으로 이동해 글을 작성할 수 있습니다.</p>
-      <a class="button" href="https://app.pagescms.org/" target="_blank" rel="noopener noreferrer">Pages CMS 열기</a>
+      <p class="intro">아래 버튼으로 Pages CMS의 글쓰기 화면으로 바로 이동해 바로 작성할 수 있습니다.</p>
+      <div class="cta">
+        <a class="button" href="https://app.pagescms.org/akayst/akayst.github.io/main/collection/posts/new" target="_blank" rel="noopener noreferrer">새 글 작성하기</a>
+        <a class="button" href="https://app.pagescms.org/akayst/akayst.github.io/main/configuration" target="_blank" rel="noopener noreferrer">CMS 설정 보기</a>
+      </div>
 
       <div class="grid">
         <article>
@@ -39,6 +42,8 @@ const base = `${import.meta.env.BASE_URL.replace(/\/+$/, '')}/`;
 
 <style>
   .page { max-width: 860px; padding: 5rem 0 3.5rem; }
+  .cta { display: flex; gap: .7rem; flex-wrap: wrap; margin-bottom: 1.2rem; }
+  .cta .button { text-decoration: none; }
   h1 { font-size: clamp(2rem, 4.5vw, 3rem); margin-bottom: .4rem; letter-spacing: -.04em; }
   .intro { margin-bottom: 2rem; color: var(--muted); }
   .grid { display: grid; gap: 1rem; margin: 2rem 0 2.4rem; }
