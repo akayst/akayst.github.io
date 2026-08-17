@@ -15,10 +15,10 @@ media:
     rename: safe
     commit:
       templates:
-        create: "이미지 추가: {filename}"
-        update: "이미지 수정: {filename}"
-        delete: "이미지 삭제: {filename}"
-        rename: "이미지 이름 변경: {oldFilename} -> {newFilename}"
+        create: "영상 추가: {filename}"
+        update: "영상 수정: {filename}"
+        delete: "영상 삭제: {filename}"
+        rename: "영상 이름 변경: {oldFilename} -> {newFilename}"
 
 settings:
   content:
