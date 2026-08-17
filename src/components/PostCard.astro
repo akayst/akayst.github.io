@@ -8,6 +8,11 @@ const date = post.data.pubDate.toLocaleDateString('ko-KR', { year: 'numeric', mo
 ---
 
 <article>
+  {post.data.cover && (
+    <a class="cover" href={`${base}blog/${post.id}/`} aria-label={`${post.data.title} 읽기`}>
+      <img src={post.data.cover} alt="" loading="lazy" />
+    </a>
+  )}
   <div class="meta"><span>{post.data.category}</span><time datetime={post.data.pubDate.toISOString()}>{date}</time></div>
   <h2><a href={`${base}blog/${post.id}/`}>{post.data.title}</a></h2>
   <p>{post.data.description}</p>
@@ -16,6 +21,9 @@ const date = post.data.pubDate.toLocaleDateString('ko-KR', { year: 'numeric', mo
 
 <style>
   article { padding: 1.7rem 0; border-bottom: 1px solid var(--line); }
+  .cover { display: block; margin-bottom: 1.2rem; overflow: hidden; border-radius: 16px; background: var(--accent-soft); aspect-ratio: 16 / 9; }
+  .cover img { width: 100%; height: 100%; object-fit: cover; border-radius: 0; transition: transform .35s ease; }
+  .cover:hover img { transform: scale(1.025); }
   .meta { display: flex; gap: .7rem; color: var(--muted); font-size: .78rem; }
   .meta span { color: var(--accent); font-weight: 700; }
   h2 { margin: .45rem 0 .35rem; font-size: clamp(1.3rem, 3vw, 1.7rem); line-height: 1.35; letter-spacing: -.035em; }

@@ -8,9 +8,14 @@ const blog = defineCollection({
     title: z.string(),
     description: z.string(),
     pubDate: z.coerce.date(),
-    updatedDate: z.coerce.date().optional(),
+    updatedDate: z.preprocess(
+      (value) => value === '' || value == null ? undefined : value,
+      z.coerce.date().optional(),
+    ),
     category: z.string().default('기록'),
     tags: z.array(z.string()).default([]),
+    cover: z.string().optional(),
+    videoUrl: z.string().optional(),
     draft: z.boolean().default(false),
   }),
 });

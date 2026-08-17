@@ -10,9 +10,16 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 const { Content, headings } = await render(post);
 const date = post.data.pubDate.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' });
+const videoUrl = post.data.videoUrl?.trim() ?? '';
+const isYouTube = videoUrl.includes('youtube.com/watch') || videoUrl.includes('youtu.be/');
+const isVimeo = videoUrl.includes('vimeo.com/');
+const youtubeId = isYouTube
+  ? (videoUrl.includes('youtu.be/') ? videoUrl.split('/').pop()?.split('?')[0] : new URLSearchParams(new URL(videoUrl).search).get('v'))
+  : '';
+const vimeoId = isVimeo ? videoUrl.split('/').filter(Boolean).pop() ?? '' : '';
 ---
 
-<BaseLayout title={post.data.title} description={post.data.description} type="article">
+<BaseLayout title={post.data.title} description={post.data.description} image={post.data.cover} type="article">
   <article class="container post">
     <header>
       <p class="eyebrow">{post.data.category}</p>
@@ -20,6 +27,37 @@ const date = post.data.pubDate.toLocaleDateString('ko-KR', { year: 'numeric', mo
       <p class="description">{post.data.description}</p>
       <div class="meta"><time datetime={post.data.pubDate.toISOString()}>{date}</time><span>·</span><span>{post.data.tags.map((tag: string) => `#${tag}`).join(' ')}</span></div>
     </header>
+    {post.data.cover && <img class="hero-image" src={post.data.cover} alt={`${post.data.title} 대표 이미지`} />}
+    {
+      videoUrl && (
+        <section class="media">
+          {isYouTube && youtubeId && (
+            <iframe
+              class="video"
+              src={`https://www.youtube.com/embed/${youtubeId}`}
+              title="YouTube 비디오 플레이어"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+            />
+          )}
+          {isVimeo && vimeoId && (
+            <iframe
+              class="video"
+              src={`https://player.vimeo.com/video/${vimeoId}`}
+              title="Vimeo 비디오 플레이어"
+              allow="autoplay; fullscreen; picture-in-picture"
+              allowfullscreen
+            />
+          )}
+          {!isYouTube && !isVimeo && (
+            <video class="video" controls preload="metadata">
+              <source src={videoUrl} type="video/mp4" />
+              브라우저가 영상을 지원하지 않습니다.
+            </video>
+          )}
+        </section>
+      )
+    }
     <div class="prose"><Content /></div>
     {headings.length > 2 && <p class="outline muted">이 글에는 {headings.length}개의 소제목이 있습니다.</p>}
   </article>
@@ -31,5 +69,8 @@ const date = post.data.pubDate.toLocaleDateString('ko-KR', { year: 'numeric', mo
   h1 { margin: .5rem 0 1rem; font-size: clamp(2.5rem, 7vw, 5.2rem); line-height: 1.08; letter-spacing: -.055em; }
   .description { max-width: 640px; margin: 0 auto; color: var(--muted); font-size: 1.12rem; }
   .meta { display: flex; flex-wrap: wrap; justify-content: center; gap: .5rem; margin-top: 1.4rem; color: var(--muted); font-size: .82rem; }
+  .hero-image { display: block; width: min(100%, 960px); max-height: 620px; margin: -1.5rem auto 4rem; object-fit: cover; aspect-ratio: 16 / 9; }
+  .media { max-width: min(100%, 960px); margin: 0 auto 3.5rem; }
+  .video { width: 100%; aspect-ratio: 16 / 9; border: 0; border-radius: 16px; overflow: hidden; display: block; }
   .outline { max-width: 740px; margin: 3rem auto 0; padding-top: 1rem; border-top: 1px solid var(--line); font-size: .8rem; }
 </style>

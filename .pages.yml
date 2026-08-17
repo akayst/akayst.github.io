@@ -1,1 +1,114 @@
-안녕하세요
+media:
+  - name: post_images
+    label: 게시물 이미지
+    input: public/uploads/images
+    output: /uploads/images
+    categories: [image]
+    extensions: [jpg, jpeg, png, webp, gif, avif]
+    rename: safe
+  - name: post_videos
+    label: 게시물 영상
+    input: public/uploads/videos
+    output: /uploads/videos
+    categories: [video]
+    extensions: [mp4, webm, mov]
+    rename: safe
+    commit:
+      templates:
+        create: "이미지 추가: {filename}"
+        update: "이미지 수정: {filename}"
+        delete: "이미지 삭제: {filename}"
+        rename: "이미지 이름 변경: {oldFilename} -> {newFilename}"
+
+settings:
+  content:
+    merge: true
+  commit:
+    identity: user
+    templates:
+      create: "게시물 작성: {name}"
+      update: "게시물 수정: {name}"
+      delete: "게시물 삭제: {name}"
+
+content:
+  - name: posts
+    label: 게시물
+    type: collection
+    path: src/content/blog
+    format: yaml-frontmatter
+    subfolders: false
+    filename:
+      template: "{year}-{month}-{day}-{primary}.md"
+      field: create
+    view:
+      fields: [title, pubDate, category, draft]
+      primary: title
+      sort: [pubDate, title]
+      search: [title, description, category, tags]
+      default:
+        sort: pubDate
+        order: desc
+    fields:
+      - name: title
+        label: 제목
+        type: string
+        required: true
+      - name: description
+        label: 요약
+        type: text
+        required: true
+        description: 글 목록과 검색 결과에 표시되는 짧은 설명입니다.
+        options:
+          maxlength: 200
+      - name: pubDate
+        label: 발행일
+        type: date
+        required: true
+        options:
+          format: yyyy-MM-dd
+      - name: updatedDate
+        label: 수정일
+        type: date
+        required: false
+        default: ""
+        options:
+          format: yyyy-MM-dd
+      - name: category
+        label: 카테고리
+        type: string
+        required: true
+        default: 기록
+      - name: tags
+        label: 태그
+        type: string
+        list: true
+        default: []
+      - name: cover
+        label: 대표 이미지
+        type: image
+        required: false
+        description: 홈과 글 상단에 표시할 이미지를 선택하거나 업로드합니다.
+        options:
+          media: post_images
+          extensions: [jpg, jpeg, png, webp, gif, avif]
+          rename: safe
+      - name: draft
+        label: 초안
+        type: boolean
+        default: true
+        description: 켜 두면 GitHub에는 저장되지만 블로그에는 공개되지 않습니다.
+      - name: videoUrl
+        label: 영상 URL
+        type: text
+        required: false
+        description: YouTube, Vimeo, 혹은 업로드한 동영상 링크를 입력하세요. (예: /uploads/videos/...) 
+      - name: body
+        label: 본문
+        type: rich-text
+        required: true
+        options:
+          format: markdown
+          switcher: true
+          media: post_images
+          extensions: [jpg, jpeg, png, webp, gif, avif]
+          rename: safe

@@ -23,8 +23,10 @@ title: "글 제목"
 description: "글 설명"
 pubDate: 2024-03-15
 updatedDate: 2026-08-17
+videoUrl: "https://www.youtube.com/watch?v=..."
 category: "개발"
 tags: ["Astro", "GitHub"]
+cover: "/uploads/images/cover.jpg"
 draft: false
 ---
 
@@ -32,6 +34,20 @@ draft: false
 ```
 
 미래 날짜의 글과 `draft: true`인 글은 공개되지 않습니다.
+
+## Pages CMS에서 글 작성
+
+저장소 루트의 `.pages.yml`이 Pages CMS 글쓰기 화면과 이미지 업로드를 설정합니다.
+
+1. [Pages CMS](https://app.pagescms.org)에 GitHub 계정으로 로그인합니다.
+2. GitHub App 설치 시 `akayst.github.io` 저장소만 선택합니다.
+3. 저장소의 **게시물** 메뉴에서 새 글을 작성합니다.
+4. 대표 이미지/본문 이미지 업로드, `videoUrl` 입력까지 완료 후 저장합니다.
+5. 글 목록에서 `/admin` 페이지의 링크로도 바로 들어갈 수 있습니다.
+
+저장하면 Markdown과 이미지가 `main` 브랜치에 커밋되고 기존 GitHub Actions 배포가 자동으로 실행됩니다. 새 글은 기본적으로 초안으로 생성되므로 공개할 때 **초안** 스위치를 끄고 저장합니다.
+
+업로드 이미지는 `public/uploads/images`에 저장됩니다. 영상은 `videoUrl`에 YouTube/Vimeo 링크를 넣거나 `/uploads/videos/파일명.mp4`로 지정할 수 있습니다.
 
 ## GitHub Pages 배포
 
