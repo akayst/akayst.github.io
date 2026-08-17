@@ -49,6 +49,15 @@ draft: false
 
 업로드 이미지는 `public/uploads/images`에 저장됩니다. 영상은 `videoUrl`에 YouTube/Vimeo 링크를 넣거나 `/uploads/videos/파일명.mp4`로 지정할 수 있습니다.
 
+### Notion 스타일 본문 에디터(옵션)
+
+현재 쓰고 있는 `app.pagescms.org`는 에디터 UI 커스터마이즈가 제한적입니다.  
+노션처럼 툴바/붙여넣기 UX를 완전히 바꾸고 싶으면 Pages CMS를 직접 호스팅해야 합니다.
+
+- 설치 가이드: https://pagescms.org/docs/guides/installing/
+- GitHub App 생성: https://pagescms.org/docs/guides/installing/github-app/
+- 커스텀 에디터 구현 가이드: /docs/pages-cms-notion-editor.md (로컬 확인용)
+
 ## GitHub Pages 배포
 
 1. GitHub에서 저장소를 만듭니다. 사용자 사이트라면 저장소 이름을 `<사용자명>.github.io`로 지정합니다.
