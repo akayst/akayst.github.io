@@ -1,0 +1,57 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE } from '../config';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  type?: 'website' | 'article';
+}
+
+const {
+  title = SITE.title,
+  description = SITE.description,
+  image,
+  type = 'website',
+} = Astro.props;
+const pageTitle = title === SITE.title ? title : `${title} · ${SITE.title}`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const socialImage = image ? new URL(image, Astro.site) : undefined;
+const basePath = import.meta.env.BASE_URL.replace(/^\/+|\/+$/g, '');
+const rssUrl = new URL(`${basePath ? `${basePath}/` : ''}rss.xml`, Astro.site);
+---
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" type="application/rss+xml" title={SITE.title} href={rssUrl} />
+    <meta property="og:type" content={type} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    {socialImage && <meta property="og:image" content={socialImage} />}
+    <meta name="twitter:card" content={socialImage ? 'summary_large_image' : 'summary'} />
+    <title>{pageTitle}</title>
+    <script is:inline>
+      const savedTheme = localStorage.getItem('theme');
+      const dark = savedTheme === 'dark' || (!savedTheme && matchMedia('(prefers-color-scheme: dark)').matches);
+      document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+    </script>
+    {SITE.adsenseClient && (
+      <script is:inline async src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${SITE.adsenseClient}`} crossorigin="anonymous"></script>
+    )}
+  </head>
+  <body>
+    <Header />
+    <main><slot /></main>
+    <Footer />
+  </body>
+</html>

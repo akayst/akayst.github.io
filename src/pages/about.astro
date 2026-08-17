@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../config';
+---
+
+<BaseLayout title="소개">
+  <section class="container page prose">
+    <p class="eyebrow">About</p>
+    <h1>안녕하세요,<br />{SITE.author}입니다.</h1>
+    <p>{SITE.description}</p>
+    <p>이 페이지의 내용은 <code>src/pages/about.astro</code>에서 자유롭게 수정할 수 있습니다.</p>
+    {SITE.email && <p>연락: <a href={`mailto:${SITE.email}`}>{SITE.email}</a></p>}
+  </section>
+</BaseLayout>
+
+<style>.page { padding-top: 5rem; } h1 { font-size: clamp(2.5rem, 7vw, 4.8rem); letter-spacing: -.055em; }</style>

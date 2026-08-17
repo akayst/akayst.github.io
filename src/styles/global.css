@@ -1,0 +1,57 @@
+:root {
+  color-scheme: light;
+  --bg: #f8f7f3;
+  --surface: rgba(255, 255, 255, 0.78);
+  --text: #22221f;
+  --muted: #6f6d65;
+  --line: #dedbd1;
+  --accent: #176b5b;
+  --accent-soft: #dcece7;
+  --max: 1060px;
+  font-family: Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --bg: #171816;
+  --surface: rgba(35, 37, 34, 0.82);
+  --text: #eeeee9;
+  --muted: #aaa99f;
+  --line: #3a3c37;
+  --accent: #76c9b6;
+  --accent-soft: #243f39;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at 12% 8%, color-mix(in srgb, var(--accent) 9%, transparent), transparent 28rem),
+    var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+}
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; height: auto; border-radius: 14px; }
+code { font-family: "SFMono-Regular", Consolas, monospace; }
+main { min-height: calc(100vh - 164px); }
+.container { width: min(calc(100% - 40px), var(--max)); margin-inline: auto; }
+.eyebrow { color: var(--accent); font-size: .78rem; font-weight: 750; letter-spacing: .12em; text-transform: uppercase; }
+.muted { color: var(--muted); }
+.button {
+  display: inline-flex; align-items: center; gap: .5rem; padding: .68rem 1rem;
+  border: 1px solid var(--line); border-radius: 999px; background: var(--surface); font-weight: 650;
+}
+.button:hover { border-color: var(--accent); color: var(--accent); }
+
+.prose { max-width: 740px; margin-inline: auto; font-size: 1.06rem; }
+.prose h2, .prose h3 { line-height: 1.35; margin-top: 2.4em; }
+.prose a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+.prose blockquote { margin-inline: 0; padding: .15rem 1.2rem; border-left: 3px solid var(--accent); color: var(--muted); }
+.prose pre { overflow: auto; padding: 1.25rem; border-radius: 14px; }
+.prose :not(pre) > code { padding: .15em .4em; border-radius: 5px; background: var(--accent-soft); }
+
+@media (max-width: 640px) {
+  .container { width: min(calc(100% - 28px), var(--max)); }
+}

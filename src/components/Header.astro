@@ -1,0 +1,33 @@
+---
+import { SITE } from '../config';
+const base = `${import.meta.env.BASE_URL.replace(/\/+$/, '')}/`;
+---
+
+<header class="site-header">
+  <div class="container bar">
+    <a class="brand" href={base}>{SITE.title}</a>
+    <nav aria-label="주요 메뉴">
+      <a href={`${base}blog/`}>글</a>
+      <a href={`${base}about/`}>소개</a>
+      <button id="theme-toggle" type="button" aria-label="색상 모드 전환">◐</button>
+    </nav>
+  </div>
+</header>
+
+<script>
+  document.querySelector('#theme-toggle')?.addEventListener('click', () => {
+    const root = document.documentElement;
+    const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+    root.dataset.theme = next;
+    localStorage.setItem('theme', next);
+  });
+</script>
+
+<style>
+  .site-header { position: sticky; top: 0; z-index: 20; border-bottom: 1px solid color-mix(in srgb, var(--line) 75%, transparent); background: color-mix(in srgb, var(--bg) 84%, transparent); backdrop-filter: blur(16px); }
+  .bar { height: 68px; display: flex; align-items: center; justify-content: space-between; }
+  .brand { font-size: 1.1rem; font-weight: 800; letter-spacing: -.03em; }
+  nav { display: flex; align-items: center; gap: 1.2rem; color: var(--muted); font-size: .93rem; }
+  nav a:hover { color: var(--accent); }
+  button { width: 34px; height: 34px; border: 1px solid var(--line); border-radius: 50%; background: var(--surface); color: var(--text); cursor: pointer; }
+</style>

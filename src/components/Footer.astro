@@ -1,0 +1,18 @@
+---
+import { SITE } from '../config';
+const base = `${import.meta.env.BASE_URL.replace(/\/+$/, '')}/`;
+---
+
+<footer>
+  <div class="container inner">
+    <span>© {new Date().getFullYear()} {SITE.author}</span>
+    <div><a href={`${base}privacy/`}>개인정보처리방침</a> · <a href={`${base}rss.xml`}>RSS</a></div>
+  </div>
+</footer>
+
+<style>
+  footer { margin-top: 5rem; border-top: 1px solid var(--line); color: var(--muted); font-size: .86rem; }
+  .inner { min-height: 94px; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+  a:hover { color: var(--accent); }
+  @media (max-width: 540px) { .inner { align-items: flex-start; justify-content: center; flex-direction: column; } }
+</style>

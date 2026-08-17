@@ -1,0 +1,35 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft && data.pubDate <= new Date());
+  return posts.map(post => ({ params: { id: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content, headings } = await render(post);
+const date = post.data.pubDate.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+
+<BaseLayout title={post.data.title} description={post.data.description} type="article">
+  <article class="container post">
+    <header>
+      <p class="eyebrow">{post.data.category}</p>
+      <h1>{post.data.title}</h1>
+      <p class="description">{post.data.description}</p>
+      <div class="meta"><time datetime={post.data.pubDate.toISOString()}>{date}</time><span>·</span><span>{post.data.tags.map((tag: string) => `#${tag}`).join(' ')}</span></div>
+    </header>
+    <div class="prose"><Content /></div>
+    {headings.length > 2 && <p class="outline muted">이 글에는 {headings.length}개의 소제목이 있습니다.</p>}
+  </article>
+</BaseLayout>
+
+<style>
+  .post { padding-top: clamp(4rem, 10vw, 7rem); }
+  header { max-width: 820px; margin: 0 auto 4.5rem; text-align: center; }
+  h1 { margin: .5rem 0 1rem; font-size: clamp(2.5rem, 7vw, 5.2rem); line-height: 1.08; letter-spacing: -.055em; }
+  .description { max-width: 640px; margin: 0 auto; color: var(--muted); font-size: 1.12rem; }
+  .meta { display: flex; flex-wrap: wrap; justify-content: center; gap: .5rem; margin-top: 1.4rem; color: var(--muted); font-size: .82rem; }
+  .outline { max-width: 740px; margin: 3rem auto 0; padding-top: 1rem; border-top: 1px solid var(--line); font-size: .8rem; }
+</style>
