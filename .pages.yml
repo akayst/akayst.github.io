@@ -101,7 +101,7 @@ content:
         label: 영상 URL
         type: text
         required: false
-        description: YouTube, Vimeo, 혹은 업로드한 동영상 링크를 입력하세요. (예: /uploads/videos/...) 
+        description: "YouTube, Vimeo, 혹은 업로드한 동영상 링크를 입력하세요. (예: /uploads/videos/...)"
       - name: body
         label: 본문
         type: rich-text
